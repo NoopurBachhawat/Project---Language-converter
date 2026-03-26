@@ -1,5 +1,3 @@
-<img width="1733" height="819" alt="Screenshot 2026-03-26 100627" src="https://github.com/user-attachments/assets/b3aa2a40-a7f3-4dda-b28e-aba33995b641" />
-<img width="1728" height="801" alt="Screenshot 2026-03-26 100600" src="https://github.com/user-attachments/assets/c7d9025c-ae4c-462d-918e-b152d1d0a032" />
 # Project---Language-converter
 This project converts Python code into C using AST parsing. It reads Python input, analyzes its structure, and translates basic constructs like variables, loops, conditions, and print statements into equivalent C syntax, generating readable output code automatically.
 
