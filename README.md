@@ -191,15 +191,15 @@ Parsing and Traversal
 Compiler Design Basics
 Syntax Mapping between Programming Languages
 Code Generation Techniques
+
+
 🔹 Challenges in the Project
-
 The main challenge in this project arises due to the fundamental differences between Python and C:
-
 Python is dynamically typed, while C is statically typed
 Python handles memory automatically, while C requires manual handling
 Python syntax is simple, whereas C syntax is strict
-
 Because of these differences, not all Python programs can be directly converted into C.
+
 
 🔹 Limitations of the System
 Does not support object-oriented programming (classes and objects)
@@ -207,14 +207,17 @@ Cannot handle external libraries like NumPy or Pandas
 Limited support for complex functions and recursion
 Assumes fixed data types (mostly integers)
 Does not fully support dynamic typing
+
+
 🔹 Future Improvements
 Support for more data types (float, char, string)
 Handling user-defined functions
 Support for arrays and pointers
 Extending to full compiler-level translation
 Adding GUI for better user interaction
-🔹 Conclusion (Detailed)
 
+
+🔹 Conclusion (Detailed)
 The Python to C converter demonstrates how high-level programming constructs can be translated into low-level language syntax using parsing techniques. By utilizing Abstract Syntax Trees, the project efficiently analyzes and processes Python code structure.
 
 Although the system supports only basic constructs, it provides a strong foundation for understanding compiler design, syntax translation, and program analysis. With further enhancements, this project can evolve into a more advanced code translation tool or even a full-fledged compiler.
