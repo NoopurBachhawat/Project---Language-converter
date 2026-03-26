@@ -1,0 +1,129 @@
+import ast
+
+class PyToCConverter(ast.NodeVisitor):
+    def __init__(self):
+        self.c_code = []
+        self.indent = 1
+
+    def add_line(self, line):
+        self.c_code.append("    " * self.indent + line)
+
+    def visit_Module(self, node):
+        self.c_code.append("#include <stdio.h>")
+        self.c_code.append("int main() {")
+        self.generic_visit(node)
+        self.add_line("return 0;")
+        self.c_code.append("}")
+        return "\n".join(self.c_code)
+
+    # ---------------- VARIABLES ----------------
+    def visit_Assign(self, node):
+        var = node.targets[0].id
+        value = self.visit(node.value)
+        self.add_line(f"int {var} = {value};")
+
+    def visit_Constant(self, node):
+        return str(node.value)
+
+    def visit_Name(self, node):
+        return node.id
+
+    # ---------------- EXPRESSIONS ----------------
+    def visit_BinOp(self, node):
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        op = self.visit(node.op)
+        return f"{left} {op} {right}"
+
+    def visit_Add(self, node): return "+"
+    def visit_Sub(self, node): return "-"
+    def visit_Mult(self, node): return "*"
+    def visit_Div(self, node): return "/"
+
+    # ---------------- PRINT ----------------
+    def visit_Expr(self, node):
+        self.visit(node.value)
+
+    def visit_Call(self, node):
+        if isinstance(node.func, ast.Name) and node.func.id == "print":
+            value = self.visit(node.args[0])
+            self.add_line(f'printf("%d\\n", {value});')
+
+    # ---------------- IF ELSE ----------------
+    def visit_If(self, node):
+        condition = self.visit(node.test)
+        self.add_line(f"if ({condition}) {{")
+        self.indent += 1
+
+        for stmt in node.body:
+            self.visit(stmt)
+
+        self.indent -= 1
+        self.add_line("}")
+
+        if node.orelse:
+            self.add_line("else {")
+            self.indent += 1
+
+            for stmt in node.orelse:
+                self.visit(stmt)
+
+            self.indent -= 1
+            self.add_line("}")
+
+    def visit_Compare(self, node):
+        left = self.visit(node.left)
+        right = self.visit(node.comparators[0])
+        op = self.visit(node.ops[0])
+        return f"{left} {op} {right}"
+
+    def visit_Eq(self, node): return "=="
+    def visit_NotEq(self, node): return "!="
+    def visit_Lt(self, node): return "<"
+    def visit_Gt(self, node): return ">"
+
+    # ---------------- FOR LOOP ----------------
+    def visit_For(self, node):
+        var = node.target.id
+        range_val = self.visit(node.iter.args[0])
+
+        self.add_line(f"for(int {var}=0; {var}<{range_val}; {var}++) {{")
+        self.indent += 1
+
+        for stmt in node.body:
+            self.visit(stmt)
+
+        self.indent -= 1
+        self.add_line("}")
+
+# ---------------- MAIN FUNCTION ----------------
+def convert_python_to_c(input_code):
+    tree = ast.parse(input_code)
+    converter = PyToCConverter()
+    return converter.visit(tree)
+
+
+# ---------------- RUN PROGRAM ----------------
+if __name__ == "__main__":
+    print("📘 PYTHON TO C CONVERTER")
+    print("Paste your Python code (type END to finish):\n")
+
+    lines = []
+    while True:
+        line = input()
+        if line.strip() == "END":
+            break
+        lines.append(line)
+
+    py_code = "\n".join(lines)
+
+    c_output = convert_python_to_c(py_code)
+
+    print("\n✅ GENERATED C CODE:\n")
+    print(c_output)
+
+    # Save to file
+    with open("output.c", "w") as f:
+        f.write(c_output)
+
+    print("\n📄 Saved as output.c")
