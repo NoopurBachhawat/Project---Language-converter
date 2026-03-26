@@ -1,0 +1,55 @@
+📘 Code Explanation
+The project is implemented using Python and is based on the concept of Abstract Syntax Tree (AST). The main component of the code is a class that inherits from ast.NodeVisitor, which is used to traverse and process different nodes of the Python program. When the user provides Python code as input, it is first parsed into an AST using the ast.parse() function. This converts the source code into a tree structure where each node represents a specific programming construct such as variables, loops, or conditions.
+
+The converter class visits each node of the AST and translates it into equivalent C code. For example, assignment nodes are converted into C variable declarations using the int data type, arithmetic operations are translated using corresponding operators like +, -, *, and /, and print statements are converted into printf() statements. Conditional statements such as if-else are mapped directly into C syntax with proper braces and indentation. Similarly, Python for loops using range() are converted into C-style for loops with initialization, condition, and increment.
+
+The program maintains proper indentation to generate readable and structured C code. All the converted lines are stored in a list and finally combined into a complete C program that includes the required header file (stdio.h) and the main() function. The generated C code is then displayed to the user and also saved into a .c file for execution.
+
+
+
+
+
+📁 Project Structure
+
+The project is designed as a single-file implementation for simplicity and ease of use. The entire logic is contained within one Python file.
+
+python_to_c.py
+
+Inside this file:
+
+PyToCConverter Class → Handles AST traversal and conversion logic
+visit functions → Convert specific Python constructs into C
+convert function → Parses input and generates output
+main block → Takes user input and saves output file
+
+The program takes Python code as input, processes it internally, and produces a C file (output.c) as output.
+
+
+
+
+
+
+
+
+
+📊 Flowchart (Text Form)
+Start
+  ↓
+Take Python Code Input
+  ↓
+Parse Code using AST
+  ↓
+Traverse AST Nodes
+  ↓
+Identify Constructs
+(variables, loops, if, print)
+  ↓
+Convert to C Syntax
+  ↓
+Generate C Code
+  ↓
+Display Output
+  ↓
+Save as .c File
+  ↓
+End
